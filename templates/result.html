@@ -88,24 +88,24 @@
 				<div class="card border-info" style="width: 12rem; height: 245px;">
 					<div class="card-header text-center" style="font-weight: bold;"> AI Content </div>
 					{% if ai_detection == "Might be AI" %}
-					<img src="{{ url_for('static', filename='images/positive.png') }}" alt="Might be AI Image"
+					<img src="{{ url_for('static', filename='images/Might_AI.png') }}" alt="Might be AI Image"
 						class="card-img-top mx-auto" style="width: 80%;">
-					<div class="card-footer text-center" style="font-weight: bold; color: rgb(15, 182, 15);"> Might be AI
+					<div class="card-footer text-center" style="font-weight: bold; color: rgb(236, 113, 13);"> Might be AI
 					</div>
 					{% elif ai_detection == "Might be Human" %}
-					<img src="{{ url_for('static', filename='images/negative.png') }}" alt="Might be Human  Image"
+					<img src="{{ url_for('static', filename='images/Might_human.png') }}" alt="Might be Human  Image"
 						class="card-img-top mx-auto" style="width: 80%;">
-					<div class="card-footer text-center" style="font-weight: bold; color: red;"> Might be Human </div>
+					<div class="card-footer text-center" style="font-weight: bold; color: rgb(58, 215, 55);"> Might be Human </div>
 					{% elif ai_detection == "AI" %}
-					<img src="{{ url_for('static', filename='images/neutral.png') }}" alt="Neutral Sentiment Image"
+					<img src="{{ url_for('static', filename='images/AI.png') }}" alt="Neutral Sentiment Image"
 						class="card-img-top mx-auto" style="width: 80%;">
 					<div class="card-footer text-center" style="font-weight: bold;color: rgb(240, 240, 6);"> Likely AI
 					</div>
 
 					{% elif ai_detection == "Human" %}
-					<img src="{{ url_for('static', filename='images/neutral.png') }}" alt="Likely Human Image"
+					<img src="{{ url_for('static', filename='images/human.png') }}" alt="Likely Human Image"
 						class="card-img-top mx-auto" style="width: 80%;">
-					<div class="card-footer text-center" style="font-weight: bold;color: rgb(240, 240, 6);"> Likely Human
+					<div class="card-footer text-center" style="font-weight: bold;color: rgb(3, 104, 33);"> Likely Human
 					</div>
 
 					{% else %}
@@ -133,7 +133,7 @@
 			
 					{% elif news_type == "technology" %}
 					<img src="{{ url_for('static', filename='images/technology.png') }}" alt="technology Image" class="card-img-top mx-auto" style="width: 80%;">
-					<div class="card-footer text-center" style="font-weight: bold;color: rgb(240, 240, 6);"> Technology </div>
+					<div class="card-footer text-center" style="font-weight: bold;color: rgb(5, 81, 135);"> Technology </div>
 			
 					{% elif news_type == "entertainment" %}
 					<img src="{{ url_for('static', filename='images/entertainment.png') }}" alt="entertainment Image" class="card-img-top mx-auto" style="width: 80%;">
@@ -338,7 +338,7 @@
 
 	<div class="container mt-3">
 		<div class="row">
-			<div class="col-md-4">
+			<div class="col-md-5">
 				<div class="card border-info" style="height: 410px; overflow: auto;">
 					<div class=" card-header" style="font-weight: bold;"> Word Impact Table </div>
 					<div class="card-body">
@@ -364,15 +364,12 @@
 
 			</div>
 
-			<div class="col-md-8">
-				<div class="card border-info" style="height: 410px; overflow: auto;">
-					<div class="card-header" style="font-weight: bold;"> News Text with Highlighted Words </div>
-
-					<div class="card-text " style="font-family: 'Arial', sans-serif; font-size: 16px; padding: 0 10px;">
-						<div class="highlighted-text">
-							<div style=" overflow: auto;">
-								<p>{{ rawtext | safe }}</p>
-							</div>
+			<div class="col-md-7">
+				<div class="card border-warning"style="height: 410px; overflow: auto;" >
+					<div class=" card-header" style="font-weight: bold;"> Contribution of Word For Prediction
+					</div>
+						<div id="barPlot"style="height: 410px;">
+							<div id="apexcharts-bar"></div>
 						</div>
 					</div>
 				</div>
@@ -381,7 +378,7 @@
 
 		</div>
 	</div>
-	<div class="container mt-3">
+	<!-- <div class="container mt-3">
 		<div class="row">
 			<div class="col-md-12">
 				<div class="card border-warning">
@@ -394,23 +391,13 @@
 				</div>
 			</div>
 		</div>
-	</div>
+	</div> -->
 
 	<div class="container mt-3">
 		<div class="row">
-			<div class="col-md-6">
-				<div class="card border-warning">
-					<div class=" card-header" style="font-weight: bold;"> Contribution of Word For Prediction
-					</div>
-						<div id="barPlot">
-							<div id="apexcharts-bar"></div>
-						</div>
-					</div>
-				</div>
-			</div>
 
 			<div class="col-md-6">
-				<div class="card border-info">
+				<div class="card border-info" style="height: 410px; overflow: auto;">
 					<div class="card-header" style="font-weight: bold;">
 						Relevant News
 					</div>
@@ -426,6 +413,25 @@
 					</div>
 				</div>
 			</div>
+			
+		
+
+			<div class="col-md-6">
+				<div class="card border-info" style="height: 410px; overflow: auto;">
+					<div class="card-header" style="font-weight: bold;"> News Text with Highlighted Words </div>
+
+					<div class="card-text " style="font-family: 'Arial', sans-serif; font-size: 16px; padding: 0 10px;">
+						<div class="highlighted-text">
+							<div style=" overflow: auto;">
+								<p>{{ rawtext | safe }}</p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+
+
 		</div>
 	</div>
 

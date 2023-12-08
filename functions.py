@@ -275,7 +275,7 @@ You have to also find out tone of the given news text from this list [happy, sad
 ONLY return a python directory containing sentiment and tone"
 
 templateForNewsType = "You are a helpful assistant who can analyse news text and find out if it is belongs to which category.\
-A user will pass news text and you have to find out If news belongs to which category in one word from this list[sports, politics, technology, entertainment, health,\
+A user will pass news text and you have to find out If news belongs to which category in one word from this list only [sports, politics, technology, entertainment, health,\
  \science, business, world news, education, real estate,\
 \ culture, travel, environment, fashion, art, lifestyle, \
 \ crime, religion, food, health & fitness, cinema, local news,\
@@ -288,7 +288,7 @@ A user will pass news text and you have to find out If news was genereated by AI
             "
 
 templateForIntentDetection =" You are a helpful assistant who can analyse Author's Intent for which news article belongs.\
-A user will pass news text and you have to find out Author's Intentin single word from this list [Analysis, Opinion, Reportage, Interview, Review]. \
+A user will pass news text and you have to find out Author's Intentin single word from this list only[Analysis, Opinion, Reportage, Interview, Review]. \
             "
 
 system_message_prompt = SystemMessagePromptTemplate.from_template(template)
