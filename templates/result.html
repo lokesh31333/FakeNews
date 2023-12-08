@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>Fake News App</title>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css">
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.2.1/css/bootstrap.min.css" rel="stylesheet">
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.7.3/css/mdb.min.css" rel="stylesheet">
+	<link href="{{ css_file }}" rel="stylesheet">
+	<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+	<link href="{{ css_file }}" rel="stylesheet">
+
+</head>
+
+<body>
+	<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+		<a class="navbar-brand" href="/">Fake News Detection App</a>
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault"
+			aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+		<div class="collapse navbar-collapse" id="navbarsExampleDefault">
+			<ul class="navbar-nav mr-auto">
+				<li class="nav-item active">
+					<a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+				</li>
+			</ul>
+		</div>
+	</nav>
+	<br />
+	<br />
+
+	<div class="container mt-3">
+		<div class="row">
+			<div class="col-md-2 d-flex justify-content-center">
+				<div class="card border-info" style="width: 12rem; height: 245px;">
+					<div class="card-header text-center" style="font-weight: bold;"> Predicted Class </div>
+					{% if prediction_result == "Real News" %}
+					<img src="{{ url_for('static', filename='images/real_news.png') }}" alt="Real News Image"
+						class="card-img-top mx-auto" style="width: 74%;">
+					<div class="card-footer text-center" style="font-weight: bold; color: rgb(153, 226, 44);"> Might be Real
+					</div>
+					{% elif prediction_result == "Fake News" %}
+					<img src="{{ url_for('static', filename='images/fake_news.png') }}" alt="Fake News Image"
+						class="card-img-bottom mx-auto" style="width: 74%;">
+					<div class="card-footer text-center" style="font-weight: bold; color: rgba(255, 0, 0, 0.938);"> Might be Fake
+					</div>
+					{% else %}
+					<img src="{{ url_for('static', filename='images/neutral_news.jpg') }}" alt="Neutral News Image"
+						class="card-img-top mx-auto" style="width: 74%;">
+					<div class="card-footer text-center" style="font-weight: bold; color: blue;"> Neutral </div>
+					{% endif %}
+					<div class="card-body">
+					</div>
+				</div>
+			</div>
+
+			<div class="col-md-2 d-flex justify-content-center">
+				<div class="card border-info" style="width: 12rem; height: 245px;">
+					<div class="card-header text-center" style="font-weight: bold;"> Sentiment </div>
+					{% if news_sentiment == "positive" %}
+					<img src="{{ url_for('static', filename='images/positive.png') }}" alt="Positive Sentiment Image"
+						class="card-img-top mx-auto" style="width: 80%;">
+					<div class="card-footer text-center" style="font-weight: bold; color: rgb(15, 182, 15);"> Positive
+					</div>
+					{% elif news_sentiment == "negative" %}
+					<img src="{{ url_for('static', filename='images/negative.png') }}" alt="Negative Sentiment  Image"
+						class="card-img-top mx-auto" style="width: 80%;">
+					<div class="card-footer text-center" style="font-weight: bold; color: red;"> Negative </div>
+					{% elif news_sentiment == "neutral" %}
+					<img src="{{ url_for('static', filename='images/neutral.png') }}" alt="Neutral Sentiment Image"
+						class="card-img-top mx-auto" style="width: 80%;">
+					<div class="card-footer text-center" style="font-weight: bold;color: rgb(240, 240, 6);"> Neutral
+					</div>
+					{% else %}
+					<img src="{{ url_for('static', filename='images/Internet Error.png') }}" alt="Internet Error Image"
+						class="card-img-top mx-auto" style="width: 65%;">
+					<div class="card-footer text-center" style="font-weight: bold;color: red"> Check Internet Connection
+					</div>
+					{% endif %}
+				</div>
+			</div>
+
+			<div class="col-md-2 d-flex justify-content-center">
+				<div class="card border-info" style="width: 12rem; height: 245px;">
+					<div class="card-header text-center" style="font-weight: bold;"> AI Content </div>
+					{% if ai_detection == "Might be AI" %}
+					<img src="{{ url_for('static', filename='images/positive.png') }}" alt="Might be AI Image"
+						class="card-img-top mx-auto" style="width: 80%;">
+					<div class="card-footer text-center" style="font-weight: bold; color: rgb(15, 182, 15);"> Might be AI
+					</div>
+					{% elif ai_detection == "Might be Human" %}
+					<img src="{{ url_for('static', filename='images/negative.png') }}" alt="Might be Human  Image"
+						class="card-img-top mx-auto" style="width: 80%;">
+					<div class="card-footer text-center" style="font-weight: bold; color: red;"> Might be Human </div>
+					{% elif ai_detection == "AI" %}
+					<img src="{{ url_for('static', filename='images/neutral.png') }}" alt="Neutral Sentiment Image"
+						class="card-img-top mx-auto" style="width: 80%;">
+					<div class="card-footer text-center" style="font-weight: bold;color: rgb(240, 240, 6);"> Likely AI
+					</div>
+
+					{% elif ai_detection == "Human" %}
+					<img src="{{ url_for('static', filename='images/neutral.png') }}" alt="Likely Human Image"
+						class="card-img-top mx-auto" style="width: 80%;">
+					<div class="card-footer text-center" style="font-weight: bold;color: rgb(240, 240, 6);"> Likely Human
+					</div>
+
+					{% else %}
+					<img src="{{ url_for('static', filename='images/Internet Error.png') }}" alt="Internet Error Image"
+						class="card-img-top mx-auto" style="width: 65%;">
+					<div class="card-footer text-center" style="font-weight: bold;color: red"> Check Internet Connection
+					</div>
+					{% endif %}
+				</div>
+			</div>
+
+
+
+			<div class="col-md-2 d-flex justify-content-center">
+				<div class="card border-info" style="width: 12rem; height: 245px;">
+					<div class="card-header text-center" style="font-weight: bold;">News Type</div>
+			
+					{% if news_type == "sports" %}
+					<img src="{{ url_for('static', filename='images/sports.png') }}" alt="sports Image" class="card-img-top mx-auto" style="width: 80%;">
+					<div class="card-footer text-center" style="font-weight: bold; color: rgb(15, 182, 15);"> Sports </div>
+			
+					{% elif news_type == "politics" %}
+					<img src="{{ url_for('static', filename='images/politics.png') }}" alt="politics Image" class="card-img-top mx-auto" style="width: 80%;">
+					<div class="card-footer text-center" style="font-weight: bold; color: red;"> Politics </div>
+			
+					{% elif news_type == "technology" %}
+					<img src="{{ url_for('static', filename='images/technology.png') }}" alt="technology Image" class="card-img-top mx-auto" style="width: 80%;">
+					<div class="card-footer text-center" style="font-weight: bold;color: rgb(240, 240, 6);"> Technology </div>
+			
+					{% elif news_type == "entertainment" %}
+					<img src="{{ url_for('static', filename='images/entertainment.png') }}" alt="entertainment Image" class="card-img-top mx-auto" style="width: 80%;">
+					<div class="card-footer text-center" style="font-weight: bold; color: purple;"> Entertainment </div>
+			
+					{% elif news_type == "health" %}
+					<img src="{{ url_for('static', filename='images/health.png') }}" alt="health Image" class="card-img-top mx-auto" style="width: 80%;">
+					<div class="card-footer text-center" style="font-weight: bold; color: green;"> Health </div>
+			
+					{% elif news_type == "science" %}
+					<img src="{{ url_for('static', filename='images/science.png') }}" alt="science Image" class="card-img-top mx-auto" style="width: 80%;">
+					<div class="card-footer text-center" style="font-weight: bold; color: blue;"> Science </div>
+			
+					{% elif news_type == "business" %}
+					<img src="{{ url_for('static', filename='images/business.png') }}" alt="business Image" class="card-img-top mx-auto" style="width: 80%;">
+					<div class="card-footer text-center" style="font-weight: bold; color: gold;"> Business </div>
+			
+					{% elif news_type == "world news" %}
+					<img src="{{ url_for('static', filename='images/world_news.png') }}" alt="world news Image" class="card-img-top mx-auto" style="width: 80%;">
+					<div class="card-footer text-center" style="font-weight: bold; color: orange;"> World News </div>
+			
+					{% elif news_type == "education" %}
+					<img src="{{ url_for('static', filename='images/education.png') }}" alt="education Image" class="card-img-top mx-auto" style="width: 80%;">
+					<div class="card-footer text-center" style="font-weight: bold; color: teal;"> Education </div>
+			
+					{% elif news_type == "real estate" %}
+					<img src="{{ url_for('static', filename='images/real_estate.png') }}" alt="real estate Image" class="card-img-top mx-auto" style="width: 80%;">
+					<div class="card-footer text-center" style="font-weight: bold; color: brown;"> Real Estate </div>
+			
+					{% elif news_type == "culture" %}
+					<img src="{{ url_for('static', filename='images/culture.png') }}" alt="culture Image" class="card-img-top mx-auto" style="width: 80%;">
+					<div class="card-footer text-center" style="font-weight: bold; color: magenta;"> Culture </div>
+			
+					{% elif news_type == "travel" %}
+					<img src="{{ url_for('static', filename='images/travel.png') }}" alt="travel Image" class="card-img-top mx-auto" style="width: 80%;">
+					<div class="card-footer text-center" style="font-weight: bold; color: cyan;"> Travel </div>
+			
+					{% elif news_type == "environment" %}
+					<img src="{{ url_for('static', filename='images/environment.png') }}" alt="environment Image" class="card-img-top mx-auto" style="width: 80%;">
+					<div class="card-footer text-center" style="font-weight: bold; color: olive;"> Environment </div>
+			
+					{% elif news_type == "fashion" %}
+					<img src="{{ url_for('static', filename='images/fashion.png') }}" alt="fashion Image" class="card-img-top mx-auto" style="width: 80%;">
+					<div class="card-footer text-center" style="font-weight: bold; color: pink;"> Fashion </div>
+			
+					{% elif news_type == "art" %}
+					<img src="{{ url_for('static', filename='images/art.png') }}" alt="art Image" class="card-img-top mx-auto" style="width: 80%;">
+					<div class="card-footer text-center" style="font-weight: bold; color: violet;"> Art </div>
+			
+					{% elif news_type == "lifestyle" %}
+					<img src="{{ url_for('static', filename='images/lifestyle.png') }}" alt="lifestyle Image" class="card-img-top mx-auto" style="width: 80%;">
+					<div class="card-footer text-center" style="font-weight: bold; color: lavender;"> Lifestyle </div>
+			
+					{% elif news_type == "crime" %}
+					<img src="{{ url_for('static', filename='images/crime.png') }}" alt="crime Image" class="card-img-top mx-auto" style="width: 80%;">
+					<div class="card-footer text-center" style="font-weight: bold; color: maroon;"> Crime </div>
+			
+					{% elif news_type == "religion" %}
+					<img src="{{ url_for('static', filename='images/religion.png') }}" alt="religion Image" class="card-img-top mx-auto" style="width: 80%;">
+					<div class="card-footer text-center" style="font-weight: bold; color: indigo;"> Religion </div>
+			
+					{% elif news_type == "food" %}
+					<img src="{{ url_for('static', filename='images/food.png') }}" alt="food Image" class="card-img-top mx-auto" style="width: 80%;">
+					<div class="card-footer text-center" style="font-weight: bold; color: chocolate;"> Food </div>
+			
+					{% elif news_type == "health & fitness" %}
+					<img src="{{ url_for('static', filename='images/health_fitness.png') }}" alt="health & fitness Image" class="card-img-top mx-auto" style="width: 80%;">
+					<div class="card-footer text-center" style="font-weight: bold; color: darkgreen;"> Health & Fitness </div>
+			
+					{% elif news_type == "cinema" %}
+					<img src="{{ url_for('static', filename='images/cinema.png') }}" alt="cinema Image" class="card-img-top mx-auto" style="width: 80%;">
+					<div class="card-footer text-center" style="font-weight: bold; color: darkred;"> Cinema </div>
+			
+					{% elif news_type == "local news" %}
+					<img src="{{ url_for('static', filename='images/local_news.png') }}" alt="local news Image" class="card-img-top mx-auto" style="width: 80%;">
+					<div class="card-footer text-center" style="font-weight: bold; color: navy;"> Local News </div>
+			
+					{% elif news_type == "national news" %}
+					<img src="{{ url_for('static', filename='images/national_news.png') }}" alt="national news Image" class="card-img-top mx-auto" style="width: 80%;">
+					<div class="card-footer text-center" style="font-weight: bold; color: darkblue;"> National News </div>
+			
+					{% elif news_type == "automotive" %}
+					<img src="{{ url_for('static', filename='images/automotive.png') }}" alt="automotive Image" class="card-img-top mx-auto" style="width: 80%;">
+					<div class="card-footer text-center" style="font-weight: bold; color: darkgray;"> Automotive </div>
+			
+					{% elif news_type == "economy" %}
+					<img src="{{ url_for('static', filename='images/economy.png') }}" alt="economy Image" class="card-img-top mx-auto" style="width: 80%;">
+					<div class="card-footer text-center" style="font-weight: bold; color: darkorange;"> Economy </div>
+					
+					{% elif news_type == "weather" %}
+					<img src="{{ url_for('static', filename='images/weather.png') }}" alt="weather Image" class="card-img-top mx-auto" style="width: 80%;">
+					<div class="card-footer text-center" style="font-weight: bold; color: darkorange;"> weather </div>
+
+					{% elif news_type == "law" %}
+					<img src="{{ url_for('static', filename='images/law.png') }}" alt="law Image" class="card-img-top mx-auto" style="width: 80%;">
+					<div class="card-footer text-center" style="font-weight: bold; color: darkorange;"> law </div>
+
+					{% elif news_type == "music" %}
+					<img src="{{ url_for('static', filename='images/music.png') }}" alt="music Image" class="card-img-top mx-auto" style="width: 80%;">
+					<div class="card-footer text-center" style="font-weight: bold; color: darkorange;"> music </div>
+
+					{% elif news_type == "books" %}
+					<img src="{{ url_for('static', filename='images/books.png') }}" alt="books Image" class="card-img-top mx-auto" style="width: 80%;">
+					<div class="card-footer text-center" style="font-weight: bold; color: darkorange;"> books </div>
+
+					{% elif news_type == "events" %}
+					<img src="{{ url_for('static', filename='images/events.png') }}" alt="events Image" class="card-img-top mx-auto" style="width: 80%;">
+					<div class="card-footer text-center" style="font-weight: bold; color: darkorange;"> events </div>
+
+					{% else %}
+					<img src="{{ url_for('static', filename='images/Internet Error.png') }}" alt="Internet Error Image"
+						class="card-img-top mx-auto" style="width: 65%;">
+					<div class="card-footer text-center" style="font-weight: bold;color: red"> Check Internet Connection
+					</div>
+					{% endif %}
+				</div>
+			</div>
+
+
+
+			<div class="col-md-2 d-flex justify-content-center">
+				<div class="card border-info" style="width: 12rem; height: 245px;">
+					<div class="card-header text-center" style="font-weight: bold;"> Author's Intent </div>
+					{% if news_intent == "Analysis" %}
+					<img src="{{ url_for('static', filename='images/Analysis.png') }}" alt="Analysis Image"
+						class="card-img-top mx-auto" style="width: 80%;">
+					<div class="card-footer text-center" style="font-weight: bold; color: rgb(15, 182, 15);"> Analysis
+					</div>
+					{% elif news_intent == "Opinion" %}
+					<img src="{{ url_for('static', filename='images/Opinion.png') }}" alt="Opinion  Image"
+						class="card-img-top mx-auto" style="width: 80%;">
+					<div class="card-footer text-center" style="font-weight: bold; color: red;"> Opinion </div>
+					{% elif news_intent == "Reportage" %}
+					<img src="{{ url_for('static', filename='images/Reportage.png') }}" alt="Reportage Image"
+						class="card-img-top mx-auto" style="width: 80%;">
+					<div class="card-footer text-center" style="font-weight: bold;color: rgb(240, 240, 6);"> Reportage
+					</div>
+					{% elif news_intent == "Interview" %}
+					<img src="{{ url_for('static', filename='images/Interview.png') }}" alt="Interview Image"
+					class="card-img-top mx-auto" style="width: 80%;">
+					<div class="card-footer text-center" style="font-weight: bold;color: rgb(240, 240, 6);"> Interview
+					</div>
+					{% elif news_intent == "Review" %}
+					<img src="{{ url_for('static', filename='images/Review.png') }}" alt="Review Image"
+					class="card-img-top mx-auto" style="width: 80%;">
+					<div class="card-footer text-center" style="font-weight: bold;color: rgb(240, 240, 6);"> Review
+					</div>
+					{% else %}
+					<img src="{{ url_for('static', filename='images/Internet Error.png') }}" alt="Internet Error Image"
+						class="card-img-top mx-auto" style="width: 65%;">
+					<div class="card-footer text-center" style="font-weight: bold;color: red"> Check Internet Connection
+					</div>
+					{% endif %}
+				</div>
+			</div>
+
+			<div class="col-md-2 d-flex justify-content-center">
+				<div class="card border-info" style="width: 12rem; height: 245px;">
+					<div class="card-header text-center" style="font-weight: bold;"> Tone </div>
+					{% if news_tone == "happy" %}
+					<img src="{{ url_for('static', filename='images/happy.png') }}" alt="Happy News Image"
+						class="card-img-top mx-auto" style="width: 80%;">
+					<div class="card-footer text-center" style="font-weight: bold;color: rgb(240, 240, 29);"> Happy
+					</div>
+					{% elif news_tone == "sad" %}
+					<img src="{{ url_for('static', filename='images/sad.png') }}" alt="Sad News Image"
+						class="card-img-top mx-auto" style="width: 80%;">
+					<div class="card-footer text-center" style="font-weight: bold;color: rgb(71, 108, 231);"> Sad </div>
+					{% elif news_tone == "angry" %}
+					<img src="{{ url_for('static', filename='images/angry.png') }}" alt="Angry News Image"
+						class="card-img-top mx-auto" style="width: 80%;">
+					<div class="card-footer text-center" style="font-weight: bold;color: red;"> Angry </div>
+					{% elif news_tone == "joyful" %}
+					<img src="{{ url_for('static', filename='images/joyful.png') }}" alt="Joyful News Image"
+						class="card-img-top mx-auto" style="width: 80%;">
+					<div class="card-footer text-center" style="font-weight: bold;color: rgb(240, 240, 0);"> Joyful
+					</div>
+					{% elif news_tone == "fearful" %}
+					<img src="{{ url_for('static', filename='images/fearful.png') }}" alt="Fearful News Image"
+						class="card-img-top mx-auto" style="width: 80%;">
+					<div class="card-footer text-center" style="font-weight: bold;color: purple;"> Fearful </div>
+					{% elif news_tone == "cautious" %}
+					<img src="{{ url_for('static', filename='images/cautious.png') }}" alt="Cautious News Image"
+						class="card-img-top mx-auto" style="width: 80%;">
+					<div class="card-footer text-center" style="font-weight: bold;color: rgb(49, 221, 26);"> Cautious
+					</div>
+					{% elif news_tone == "neutral"%}
+					<img src="{{ url_for('static', filename='images/neutral_sentiment.png') }}" alt="Neutral News Image"
+						class="card-img-top mx-auto" style="width: 80%;">
+					<div class="card-footer text-center" style="font-weight: bold;color: orange;"> Neutral </div>
+					{% else %}
+					<img src="{{ url_for('static', filename='images/Internet Error.png') }}" alt="Internet Error Image"
+						class="card-img-top mx-auto" style="width: 65%;">
+					<div class="card-footer text-center" style="font-weight: bold;color: red;"> Check Internet
+						Connection
+					</div>
+					{% endif %}
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="container mt-3">
+		<div class="row">
+			<div class="col-md-4">
+				<div class="card border-info" style="height: 410px; overflow: auto;">
+					<div class=" card-header" style="font-weight: bold;"> Word Impact Table </div>
+					<div class="card-body">
+						<table class="table table-bordered table-hover rounded-table"
+							style="width: 18rem; margin: 0 auto;">
+							<thead class="table-dark">
+								<tr>
+									<th>Word</th>
+									<th class="text-center">Impact</th>
+								</tr>
+							</thead>
+							<tbody>
+								{% for word, weight in word_weights.items() %}
+								<tr class="{{ 'positive' if weight >= 0 else 'negative' }}">
+									<td>{{ word }}</td>
+									<td class="text-center">{{ weight }}</td>
+								</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+					</div>
+				</div>
+
+			</div>
+
+			<div class="col-md-8">
+				<div class="card border-info" style="height: 410px; overflow: auto;">
+					<div class="card-header" style="font-weight: bold;"> News Text with Highlighted Words </div>
+
+					<div class="card-text " style="font-family: 'Arial', sans-serif; font-size: 16px; padding: 0 10px;">
+						<div class="highlighted-text">
+							<div style=" overflow: auto;">
+								<p>{{ rawtext | safe }}</p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+
+		</div>
+	</div>
+	<div class="container mt-3">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="card border-warning">
+					<div class=" card-header" style="font-weight: bold;"> Contribution of Word For Prediction
+					</div>
+						<div id="barPlot">
+							<div id="apexcharts-bar"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="container mt-3">
+		<div class="row">
+			<div class="col-md-6">
+				<div class="card border-warning">
+					<div class=" card-header" style="font-weight: bold;"> Contribution of Word For Prediction
+					</div>
+						<div id="barPlot">
+							<div id="apexcharts-bar"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-md-6">
+				<div class="card border-info">
+					<div class="card-header" style="font-weight: bold;">
+						Relevant News
+					</div>
+					<div class="card-body">
+						{% for news_entry in relevant_news_dict['news_list'][:5] %}
+						<div style="font-weight: bold;">Title: {{ news_entry['entry_title'] }}</div>
+						<div style="font-weight: bold;">Source: {{ news_entry['source'] }}</div>
+						<p><a href="{{ news_entry['url'] }}" target="_blank">{{ news_entry['summary'] }}</a></p>
+                        <hr>
+						{% endfor %}
+						<div style="font-weight: bold;">More related news:</div>
+						<a href="{{ relevant_news_dict['news_search_url'] }}" target="_blank">Click here</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<br />
+
+	<script>
+		var words = {{ words | tojson }};
+		var weights = {{ weights | tojson }};
+		var labels = Object.keys(words);
+		var data = Object.values(weights);
+		var options = {
+			chart: {
+				height: 300,
+				type: "bar",
+			},
+			plotOptions: {
+				bar: {
+					horizontal: false,
+					barWidth: 60,
+					borderRadius: 2,
+				},
+			},
+			dataLabels: {
+				enabled: false,
+			},
+			stroke: {
+				width: 1,
+				colors: ["#fff"]
+			},
+			series: [{
+				name: "Contribution for Real",
+				data: data.map(function (weight) {
+					return weight < 0 ? null : weight; // Assign null to "Fake" bars on the left
+				})
+			}, {
+				name: "Contribution for Fake",
+				data: data.map(function (weight) {
+					return weight > 0 ? null : weight; // Assign null to "Real" bars on the right
+				})
+			}],
+			xaxis: {
+				categories: words,
+				title: {
+					text: "Words",
+				},
+			},
+			yaxis: {
+				title: {
+					text: "Impact",
+				},
+				axisTicks: {
+					show: true,
+				},
+			},
+			fill: {
+				opacity: 1
+			},
+			legend: {
+				position: "top",
+				horizontalAlign: "left",
+				offsetX: 40,
+			},
+			colors: ["#66b266", "#ff9999"], // Light green for "Real" and light red for "Fake"
+		};
+
+		var chart = new ApexCharts(
+			document.querySelector("#apexcharts-bar"),
+			options
+		);
+		chart.render();
+	</script>
+</body>
+
+</html>

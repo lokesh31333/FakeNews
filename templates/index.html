@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Fake News App</title>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- <link rel="stylesheet" type="text/css" media="screen" href="main.css" /> -->
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css">
+  <!-- Bootstrap core CSS -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.2.1/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Material Design Bootstrap -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.7.3/css/mdb.min.css" rel="stylesheet">
+  <!-- Custom styles -->
+  <link href="{{css_file}}" rel="stylesheet">
+  </link>
+</head>
+
+<body class="blurred-background">
+  <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+    <a class="navbar-brand" href="/">Fake News Detection App</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault"
+      aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+        </li>
+      </ul>
+
+    </div>
+  </nav>
+  <br />
+  <br />
+
+  <div class="card" style="background-color: rgb(58, 60, 183);">
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-8">
+          <h4 class="card-title" style="color: white;">Welcome to Fake News Detection Appliation</h4>
+          <p class="card-text" style="color: #fff;">This system leverages Bidirectional LSTM (BiLSTM), a type of neural
+            network architecture, combined with LIME, a text explainer, to detect and explain fake news. BiLSTM
+            processes text bidirectionally for improved NLP tasks, while LIME provides interpretability by explaining
+            the model's predictions</p>
+          <p class="card-text" style="color: #fff;">It is a powerful fusion of deep learning and model explainability
+            for accurate and transparent fake news classification.</p>
+            <p class="card-text" style="color: #fff;">Disclaimer: While our app strives to provide accurate analysis in detecting fake news, it is important to understand that no technology can guarantee 100% accuracy. The results offered by this app should not be taken as definitive or used as the sole source for news authenticity. Users are encouraged to cross-reference information and consult additional sources to form a well-rounded understanding of the news.</p>
+  
+          <p><a class="btn btn-success waves-effect btn-sm" href="/" role="button">Refresh &raquo;</a></p>
+        </div>
+        <div class="col-md-4">
+          <img src="{{newspaper_img}}" alt="Image" class="img-fluid" style="width: 100%; height: auto;">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <br />
+  <div class="container">
+    <h2 class="text-black mb-4" style="font-weight: bold;">Want To Analyze News?</h2>
+    <form method="POST" action="{{ url_for('predict')}}">
+      <!--  -->
+      <textarea rows="5" cols="5" required="true" name="rawtext" class="form-control"></textarea>
+      <div class="d-flex justify-content-center mt-3">
+        <button type="reset" class="btn btn-primary"><i class="fa fa-eraser"></i> Clear</button>
+        <button type="submit" class="btn btn-info ml-2"><i class="fa fa-search"></i> Analyze</button>
+      </div>
+    </form>
+  </div>
+  <br />
+
+</body>
+
+</html>
